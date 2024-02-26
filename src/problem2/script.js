@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sendPrice = currencyPrices[sendCurrency];
     const receivePrice = currencyPrices[receiveCurrency];
 
-    if (updatingFromSend) {
+    if (fromSend) {
       const sendAmount = inputAmountSend.value;
       const receiveAmount = (sendAmount * sendPrice) / receivePrice;
       inputAmountReceive.value = sendAmount ? receiveAmount.toFixed(2) : "0";
@@ -47,12 +47,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   inputAmountSend.addEventListener("input", () => {
-    updatingFromSend = true;
+    fromSend = true;
     updateAmounts();
   });
 
   inputAmountReceive.addEventListener("input", () => {
-    updatingFromSend = false;
+    fromSend = false;
     updateAmounts();
   });
 
