@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputAmountSend = document.getElementById("send-amount");
   const inputAmountReceive = document.getElementById("receive-amount");
   let currencyPrices = {};
+  inputAmountSend.value = "1";   // default send amount when page is loaded
   // track which input is triggering the update to prevent infinite loop
   let fromSend = true; // true if inputAmountSend is being changed, false if inputAmountReceive is being changed
 
