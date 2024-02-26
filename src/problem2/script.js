@@ -86,13 +86,13 @@ document.addEventListener("DOMContentLoaded", function () {
   window.submitForm = function(event) {
     // event.preventDefault(); // Prevent the form from submitting in the traditional way
 
-    const loadingAnimation = document.getElementById('loading-animation');
-    loadingAnimation.style.display = 'block';
+    const submitButton = document.getElementById('submit-button');
+
+    submitButton.innerHTML = 'Swapping currency...';
+    submitButton.disabled = true;
   
     // simulate server loading with a delay of 2 seconds
     setTimeout(() => {
-      // hide the loading animation and redirect to the "Swap Successful" page
-      loadingAnimation.style.display = 'none';
       window.location.href = 'swap-successful.html';
     }, 2000);
   
