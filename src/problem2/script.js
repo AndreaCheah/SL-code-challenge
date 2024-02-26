@@ -24,7 +24,17 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       });
-      console.log(currencyPrices);
+      console.log(currencies);
+      console.log("currencies length is", currencies.size);
+      // set default currency selections
+      if (currencies.size >= 2) {
+        console.log("setting default currency selections")
+        const firstCurrency = Array.from(currencies)[0];
+        const secondCurrency = Array.from(currencies)[1];
+        currencySelectElements[0].value = firstCurrency;
+        currencySelectElements[1].value = secondCurrency;
+        updateAmounts();
+      }
     })
     .catch((error) => console.error("Error fetching currency list:", error));
 
