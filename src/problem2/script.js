@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const receivePrice = currencyPrices[receiveCurrency];
     const receiveAmount = (sendAmount * sendPrice) / receivePrice;
     inputAmountReceive.value = receiveAmount.toFixed(2);
+    if (sendAmount === '') {
+      inputAmountReceive.value = '0';
+    }
     console.log(
       "sendAmount, sendCurrency, sendPrice",
       sendAmount,
