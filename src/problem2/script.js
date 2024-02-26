@@ -1,23 +1,52 @@
 document.addEventListener("DOMContentLoaded", function () {
   const currencySelectElements = document.querySelectorAll(".currency-select");
-  currencySelectElements.forEach((selectElement) => {
-    fetch("https://interview.switcheo.com/prices.json")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        const currencies = new Set();
-        data.forEach((item) => {
-          console.log(item.currency);
-          if (!currencies.has(item.currency)) {
-            currencies.add(item.currency);
+  const inputAmountSend = document.getElementById("send-amount");
+  const inputAmountReceive = document.getElementById("receive-amount");
+  let currencyPrices = {};
+
+  fetch("https://interview.switcheo.com/prices.json")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("data is", data);
+      const currencies = new Set();
+      data.forEach((item) => {
+        console.log(item.currency);
+        currencyPrices[item.currency] = item.price;
+        if (!currencies.has(item.currency)) {
+          currencies.add(item.currency);
+          currencySelectElements.forEach((selectElement) => {
             const option = document.createElement("option");
             option.value = item.currency;
             option.text = item.currency;
             selectElement.appendChild(option);
-          }
-        });
-      })
-      .catch((error) => console.error("Error fetching currency list:", error));
+          });
+        }
+      });
+      console.log(currencyPrices);
+    })
+    .catch((error) => console.error("Error fetching currency list:", error));
+
+  function calculateReceiveAmount() {
+    console.log("currency select elements are", currencySelectElements);
+    const sendAmount = inputAmountSend.value;
+    const sendCurrency = currencySelectElements[0].value;
+    const receiveCurrency = currencySelectElements[1].value;
+    const sendPrice = currencyPrices[sendCurrency];
+    const receivePrice = currencyPrices[receiveCurrency];
+    const receiveAmount = (sendAmount * sendPrice) / receivePrice;
+    inputAmountReceive.value = receiveAmount.toFixed(2);
+    console.log(
+      "sendAmount, sendCurrency, sendPrice",
+      sendAmount,
+      sendCurrency,
+      sendPrice
+    );
+    console.log("receiveCurrency, receivePrice", receiveCurrency, receivePrice);
+  }
+
+  inputAmountSend.addEventListener("input", calculateReceiveAmount);
+  currencySelectElements.forEach((selectElement) => {
+    selectElement.addEventListener("change", calculateReceiveAmount);
   });
 
   document.querySelectorAll("input").forEach(function (input) {
@@ -31,13 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         (e.key === "." && contains(e.target.value, "."));
       invalidKey && e.preventDefault();
     });
-  });
-
-  const inputAmountSend = document.getElementById("send-amount");
-  const inputAmountReceive = document.getElementById("receive-amount");
-
-  inputAmountSend.addEventListener("input", function () {
-    inputAmountReceive.value = inputAmountSend.value; // for now they are of the same value
   });
 
   // window.submitForm = function() {
