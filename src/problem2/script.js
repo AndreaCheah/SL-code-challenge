@@ -83,14 +83,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // window.submitForm = function() {
-  //   event.preventDefault();
+  window.submitForm = function(event) {
+    // event.preventDefault(); // Prevent the form from submitting in the traditional way
 
-  //   const form = document.querySelector('form');
-  //   form.innerHTML = '<h1>Swap Successful</h1>';
-
-  //   // Return false to prevent the form submission if not already prevented
-  //   return false;
-  // };
+    const loadingAnimation = document.getElementById('loading-animation');
+    loadingAnimation.style.display = 'block';
+  
+    // simulate server loading with a delay of 2 seconds
+    setTimeout(() => {
+      // hide the loading animation and redirect to the "Swap Successful" page
+      loadingAnimation.style.display = 'none';
+      window.location.href = 'swap-successful.html';
+    }, 2000);
+  
+    return false;
+  };
+  
   0;
 });
