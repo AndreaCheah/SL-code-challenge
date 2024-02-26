@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputAmountSend = document.getElementById("send-amount");
   const inputAmountReceive = document.getElementById("receive-amount");
   let currencyPrices = {};
+  // track which input is triggering the update to prevent infinite loop
+  let fromSend = true; // true if inputAmountSend is being changed, false if inputAmountReceive is being changed
 
   fetch("https://interview.switcheo.com/prices.json")
     .then((response) => response.json())
@@ -26,30 +28,36 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error fetching currency list:", error));
 
-  function calculateReceiveAmount() {
+  function updateAmounts() {
     console.log("currency select elements are", currencySelectElements);
-    const sendAmount = inputAmountSend.value;
     const sendCurrency = currencySelectElements[0].value;
     const receiveCurrency = currencySelectElements[1].value;
     const sendPrice = currencyPrices[sendCurrency];
     const receivePrice = currencyPrices[receiveCurrency];
-    const receiveAmount = (sendAmount * sendPrice) / receivePrice;
-    inputAmountReceive.value = receiveAmount.toFixed(2);
-    if (sendAmount === '') {
-      inputAmountReceive.value = '0';
+
+    if (updatingFromSend) {
+      const sendAmount = inputAmountSend.value;
+      const receiveAmount = (sendAmount * sendPrice) / receivePrice;
+      inputAmountReceive.value = sendAmount ? receiveAmount.toFixed(2) : "0";
+    } else {
+      const receiveAmount = inputAmountReceive.value;
+      const sendAmount = (receiveAmount * receivePrice) / sendPrice;
+      inputAmountSend.value = receiveAmount ? sendAmount.toFixed(2) : "0";
     }
-    console.log(
-      "sendAmount, sendCurrency, sendPrice",
-      sendAmount,
-      sendCurrency,
-      sendPrice
-    );
-    console.log("receiveCurrency, receivePrice", receiveCurrency, receivePrice);
   }
 
-  inputAmountSend.addEventListener("input", calculateReceiveAmount);
+  inputAmountSend.addEventListener("input", () => {
+    updatingFromSend = true;
+    updateAmounts();
+  });
+
+  inputAmountReceive.addEventListener("input", () => {
+    updatingFromSend = false;
+    updateAmounts();
+  });
+
   currencySelectElements.forEach((selectElement) => {
-    selectElement.addEventListener("change", calculateReceiveAmount);
+    selectElement.addEventListener("change", updateAmounts);
   });
 
   document.querySelectorAll("input").forEach(function (input) {
