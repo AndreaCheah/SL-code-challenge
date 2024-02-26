@@ -32,5 +32,22 @@ document.addEventListener("DOMContentLoaded", function () {
       invalidKey && e.preventDefault();
     });
   });
+
+  const inputAmountSend = document.getElementById("send-amount");
+  const inputAmountReceive = document.getElementById("receive-amount");
+
+  inputAmountSend.addEventListener("input", function () {
+    inputAmountReceive.value = inputAmountSend.value; // for now they are of the same value
+  });
+
+  // window.submitForm = function() {
+  //   event.preventDefault();
+
+  //   const form = document.querySelector('form');
+  //   form.innerHTML = '<h1>Swap Successful</h1>';
+
+  //   // Return false to prevent the form submission if not already prevented
+  //   return false;
+  // };
   0;
 });

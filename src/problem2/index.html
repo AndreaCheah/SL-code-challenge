@@ -10,17 +10,17 @@
 <body>
 
   <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return !1">
+  <form onsubmit="return submitForm()">
     <h5>Swap</h5>
     <div class="input-group">
-      <label for="input-amount">Amount to send</label>
-      <input id="input-amount" />
+      <label for="send-amount">Amount to send</label>
+      <input id="send-amount" />
       <select class="currency-select"></select>
     </div>
 
     <div class="input-group">
-      <label for="output-amount">Amount to receive</label>
-      <input id="output-amount" />
+      <label for="receive-amount">Amount to receive</label>
+      <input id="receive-amount" />
       <select class="currency-select"></select>
     </div>
 
