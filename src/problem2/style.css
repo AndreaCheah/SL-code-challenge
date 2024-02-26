@@ -1,14 +1,63 @@
 body {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-width: 360px;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
+}
+
+.input-group-container {
+  background-color: rgb(31, 30, 30);
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.label-group {
+  margin-bottom: 5px;
+  color: darkgray;
+  font-size: 14px;
 }
 
 .input-group {
-  margin-bottom: 20px; /* Adds some space between the groups */
+  display: flex;
+  align-items: center;
+}
+
+input, select {
+  border: none;
+  margin-right: 5px;
+}
+
+input {
+  color: darkgray;
+  flex-grow: 1;
+  font-size: 32px;
+  font-weight: bold;
+  background-color: transparent;
+  width: 100%;
+}
+
+select {
+  background-color: black;
+  width: 80%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border-radius: 20px;
+}
+
+select:hover {
+  background-color: rgb(39, 37, 37);
+}
+
+input:focus {
+  outline: none;
+  border: transparent;
 }
 
 form {
@@ -18,5 +67,20 @@ form {
 }
 
 button {
-  margin-top: 10px; /* Adds space above the button */
+  width: 50%;
+  background-color: darkseagreen;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+button:hover{
+  background-color: rgb(134, 222, 52);
+}
+
+h5 {
+  font-size: 24px;
+  color: darkseagreen;
+  font-weight: bold;
 }

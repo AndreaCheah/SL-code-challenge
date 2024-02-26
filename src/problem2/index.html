@@ -1,34 +1,37 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fancy Form</title>
-
-  <!-- You may add more stuff here -->
-  <link href="style.css" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet">
 </head>
-
 <body>
-
-  <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return submitForm()">
+  <form onsubmit="return submitForm();">
     <h5>Swap</h5>
-    <div class="input-group">
-      <label for="send-amount">Amount to send</label>
-      <input id="send-amount" />
-      <select class="currency-select"></select>
+    <div class="input-group-container">
+      <div class="label-group">
+        <label for="send-amount">Amount to send</label>
+      </div>
+      <div class="input-group">
+        <input id="send-amount" />
+        <select class="currency-select"></select>
+      </div>
     </div>
 
-    <div class="input-group">
-      <label for="receive-amount">Amount to receive</label>
-      <input id="receive-amount" />
-      <select class="currency-select"></select>
+    <div class="input-group-container">
+      <div class="label-group">
+        <label for="receive-amount">Amount to receive</label>
+      </div>
+      <div class="input-group">
+        <input id="receive-amount" />
+        <select class="currency-select"></select>
+      </div>
     </div>
 
     <button type="submit">Confirm Swap</button>
-
     <div id="loading-animation" style="display:none;">Loading...</div>
   </form>
   <script src="script.js"></script>
 </body>
-
 </html>
