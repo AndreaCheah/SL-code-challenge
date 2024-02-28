@@ -48,7 +48,24 @@ const BlockchainPriority: { [key in Blockchain]: number } = {
 };
 
 class Datasource {
-  // TODO: Implement datasource class
+  private apiUrl: string;
+
+  constructor(apiUrl: string) {
+    this.apiUrl = apiUrl;
+  }
+
+  async getPrices(): Promise<Record<string, number>> {
+    try {
+      const response = await fetch(this.apiUrl);
+      if (!response.ok) {
+        throw new Error(`Error fetching prices: ${response.statusText}`);
+      }
+      const prices = await response.json();
+      return prices;
+    } catch (error) {
+      throw new Error(`Failed to fetch prices: ${error}`);
+    }
+  }
 }
 
 interface Props extends BoxProps {}
@@ -74,14 +91,16 @@ const WalletPage: React.FC<Props> = ({ children, ...rest }: Props) => {
   };
 
   const sortedBalances = useMemo(() => {
-      // Filter out invalid balances
-      const validBalances = balances.filter((balance) => {
-        const balancePriority = getPriority(balance.blockchain);
-        return balance.amount > 0 && balancePriority > -99;
-      });
-      // Sort balances by priority
-      return validBalances.sort((lhs, rhs) => getPriority(rhs.blockchain) - getPriority(lhs.blockchain));
-    }, [balances]);
+    // Filter out invalid balances
+    const validBalances = balances.filter((balance) => {
+      const balancePriority = getPriority(balance.blockchain);
+      return balance.amount > 0 && balancePriority > -99;
+    });
+    // Sort balances by priority
+    return validBalances.sort(
+      (lhs, rhs) => getPriority(rhs.blockchain) - getPriority(lhs.blockchain)
+    );
+  }, [balances]);
 
   const formattedBalances = sortedBalances.map((balance: WalletBalance) => {
     return {
@@ -92,9 +111,9 @@ const WalletPage: React.FC<Props> = ({ children, ...rest }: Props) => {
 
   const rows = sortedBalances.map((balance: WalletBalance, index: number) => {
     const usdValue = prices[balance.currency] * balance.amount;
-    
+
     return (
-      <WalletRow 
+      <WalletRow
         className={classes.row}
         key={`${balance.currency}-${index}`}
         amount={balance.amount}
