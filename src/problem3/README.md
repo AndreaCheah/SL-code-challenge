@@ -1,0 +1,17 @@
+# Issues of the original code and how to improve it
+
+1. Since `FormattedWalletBalance` is the formatted version of `WalletBalance` and has the same attributes as `WalletBalance` but has an extra attribute `formatted`, `FormattedWalletBalance` can inherit from `WalletBalance` to reduce code redundancy.
+2. Use enum instead of switch-case to increase maintainability of the code, so that in the future, in the case where there might be a need to add a new blockchain or change a priority, it would be much cleaner to modify the enum instead of modifying multiple switch-case statements spread across the codebase.
+3. Destructure props directly in the function signature. This makes it clear from the start which props are expected and used within the component.
+4. Change `useWalletBalances()` function name to `getWalletBalances()` to follow a clearer naming convention to retrieve wallet balances.
+5. Add a type for the prices state (Record<string, number>) to ensure type safety. This assumes prices is a dictionary where keys are currency codes and values are their respective prices.
+6. Centralise the Datasource URL so that it would be easier to update them in one place rather than searching through the codebase for hardcoded instances.
+7. Format the .then() and .catch() blocks to start at the beginning of the line to improve readability, particularly in distinguishing between the resolution and rejection handlers of the promise.
+8. For the `blockchain` input of the `getPriority` function, instead of specifying it as type `any`, it would be more type-safe by declaring a more specific type. It would also be great to have a `Blockchain` enum to store a fixed set of related constants, such as blockchain names, to increase maintainability. Considering those two reasons, we can adjust the `getPriority` function to accept the `Blockchain` enum as parameter type to increase type-safety and improve the maintainability of the code.
+9. `lhsPriority` seems to be a mistake as it was not defined anywhere else and `balancePriority` was not used after being assigned a value. We shall replace `lhsPriority` with `balancePriority`.
+10. There seems to be an error in filter logic. It checks if balance amount is less than or equal to 0, which is counter-intuitive. Typically, we would want to filter in the positive balances, not filter them out.
+11. Calculate priorities outside instead of inside of the sort comparator to avoid recalculating them when sorting.
+12. As we see in the `sortedBalances`, since `balance` is of type `WalletBalance` which has a `blockchain` attribute, we can add `blockchain` as an attribute of `WalletBalance`.
+13. For the `sort` function, there is no need to declare the types of the inputs explicitly. Given `validBalances` is an array of `WalletBalance` objects, as inferred from the `balances.filter(...)` operation which returns elements of the same type as those in `balances`, TypeScript's type inference allows TypeScript to understand that the inputs `lhs` and `rhs` of the `sort` function are also of type `WalletBalance`. Omitting the types of these inputs can improve readability.
+14. The `prices` dependency is omitted in the refactored code because the sorting and filtering logic does not depend on it, and only depends on `balances`.
+15. The original code uses index as a key, which can be problematic when the order of items may change. It can negatively impact performance and cause issues with component state.
